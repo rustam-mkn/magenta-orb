@@ -76,6 +76,75 @@ canvas {
   filter: saturate(1.08);
 }
 
+.orb-visualization {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, rgba(255, 97, 173, 0.1), transparent 32%),
+    radial-gradient(circle at center, rgba(22, 0, 13, 0.74), rgba(10, 0, 7, 0.96) 72%);
+  z-index: 0;
+}
+
+.orb-visualization__core,
+.orb-visualization__band,
+.orb-visualization__dots {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.orb-visualization__core {
+  background:
+    radial-gradient(circle at center, rgba(255, 120, 194, 0.26), rgba(255, 76, 154, 0.12) 18%, transparent 40%),
+    radial-gradient(circle at center, transparent 44%, rgba(255, 56, 133, 0.06) 65%, transparent 73%);
+  filter: blur(18px) saturate(1.15);
+  opacity: 0.9;
+}
+
+.orb-visualization__dots {
+  background-image:
+    radial-gradient(circle, rgba(255, 92, 166, 0.9) 0 1.5px, rgba(255, 92, 166, 0.15) 2.4px, transparent 3.8px);
+  background-size: 24px 24px;
+  background-position: center;
+  filter: blur(0.2px) drop-shadow(0 0 10px rgba(255, 74, 155, 0.35));
+  mask-image:
+    radial-gradient(circle at center, rgba(0, 0, 0, 0.98) 0 58%, rgba(0, 0, 0, 0.4) 72%, transparent 84%);
+  opacity: 0.78;
+  transform: rotate(-8deg) scale(1.02);
+}
+
+.orb-visualization__band {
+  inset: 10%;
+  border: 18px dotted rgba(255, 106, 182, 0.72);
+  filter: blur(3px) drop-shadow(0 0 16px rgba(255, 82, 168, 0.4));
+  mix-blend-mode: screen;
+  opacity: 0.88;
+}
+
+.orb-visualization__band--a {
+  clip-path: ellipse(34% 44% at 34% 46%);
+  transform: rotate(-24deg);
+  animation: orbit-band-a 8.4s ease-in-out infinite;
+}
+
+.orb-visualization__band--b {
+  inset: 14%;
+  clip-path: ellipse(42% 24% at 62% 58%);
+  transform: rotate(36deg);
+  border-width: 15px;
+  opacity: 0.72;
+  animation: orbit-band-b 10.5s ease-in-out infinite;
+}
+
+.scene-frame > div[style] {
+  position: absolute !important;
+  inset: 0;
+  z-index: 1;
+}
+
 .scene-frame::before,
 .scene-frame::after {
   content: '';
@@ -144,6 +213,62 @@ canvas {
   transform: translate(calc(-50% - 42vmin), -50%);
 }
 
+.scene-copy {
+  position: absolute;
+  bottom: 5.5vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.scene-copy__eyebrow,
+.scene-copy__title {
+  margin: 0;
+}
+
+.scene-copy__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255, 179, 215, 0.56);
+}
+
+.scene-copy__title {
+  margin-top: 10px;
+  font-size: clamp(24px, 3.2vw, 42px);
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 214, 233, 0.92);
+  text-shadow: 0 0 18px rgba(255, 84, 160, 0.16);
+}
+
+@keyframes orbit-band-a {
+  0% {
+    transform: rotate(-28deg) scale(0.94);
+  }
+  50% {
+    transform: rotate(16deg) scale(1.02) translateX(2.5%);
+  }
+  100% {
+    transform: rotate(64deg) scale(0.96);
+  }
+}
+
+@keyframes orbit-band-b {
+  0% {
+    transform: rotate(42deg) scale(0.92) translateY(4%);
+  }
+  50% {
+    transform: rotate(-10deg) scale(1.02) translateY(-3%);
+  }
+  100% {
+    transform: rotate(-58deg) scale(0.95) translateY(2%);
+  }
+}
+
 @media (max-width: 720px) {
   .scene-frame {
     width: min(98vmin, 98vw);
@@ -163,5 +288,17 @@ canvas {
 
   .hud-mark-left {
     transform: translate(calc(-50% - 46vmin), -50%);
+  }
+
+  .orb-visualization__band {
+    border-width: 12px;
+  }
+
+  .scene-copy {
+    bottom: 8vmin;
+  }
+
+  .scene-copy__eyebrow {
+    font-size: 10px;
   }
 }
