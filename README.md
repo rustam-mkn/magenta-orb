@@ -1,33 +1,31 @@
-# Magenta Orb
-
-Procedural React + React Three Fiber + Three.js study inspired by the provided motion reference.
+# magenta-web
 
 ![Magenta Orb Visualization](./docs/assets/magenta-orb-preview.gif)
 
-## Stack
+Веб-проект с процедурной анимацией orb на `Vite + React + React Three Fiber + Three.js`.
 
-- Vite
-- TypeScript
-- React
-- three
-- @react-three/fiber
-- @react-three/postprocessing
-
-## Run
+## Установка
 
 ```bash
 npm install
+```
+
+## Запуск
+
+```bash
 npm run dev
 ```
 
-## Build
+## Сборка
 
 ```bash
 npm run build
 ```
 
-## Quick Strart 🚀
-```
-cd "/Users/user/Documents/magenta-orb-desktop"
-npm start
-```
+## Что внутри
+
+- `React`
+- `TypeScript`
+- `three`
+- `@react-three/fiber`
+- `@react-three/postprocessing`
