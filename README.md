@@ -25,3 +25,9 @@ npm run dev
 ```bash
 npm run build
 ```
+
+## Quick Strart 🚀
+```
+cd "/Users/user/Documents/magenta-orb-desktop"
+npm start
+```
