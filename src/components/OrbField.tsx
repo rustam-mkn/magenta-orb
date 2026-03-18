@@ -155,7 +155,8 @@ export function OrbField() {
       return
     }
 
-    const t = state.clock.elapsedTime * 0.55
+    const rawTime = state.clock.elapsedTime
+    const t = rawTime * 0.46
     const { positions, colors, sizes, spherical, random, geometry } = orbData
 
     for (let index = 0; index < ORB_CONFIG.pointCount; index += 1) {
@@ -184,10 +185,10 @@ export function OrbField() {
       ;[flowBY, flowBZ] = rotateYZ(flowBY, flowBZ, t * 0.82 + dirX * 0.35)
       ;[flowBX, flowBZ] = rotateXZ(flowBX, flowBZ, 0.28 * Math.sin(t * 0.77 + dirY * 2.6))
 
-      const ringSweep = Math.exp(-((flowAX * 0.88 + flowAY * 0.34 - 0.46 * Math.sin(t * 0.72)) ** 2) / 0.02)
+      const ringSweep = Math.exp(-((flowAX * 0.88 + flowAY * 0.34 - 0.42 * Math.sin(t * 0.64)) ** 2) / 0.022)
       const ribbonShape = flowBZ - 0.18 * Math.sin(flowBX * 4.8 + t * 2.2)
       const ribbon =
-        Math.exp(-(ribbonShape ** 2) / 0.026) * smoothstep(-0.95, 0.55, flowBX)
+        Math.exp(-(ribbonShape ** 2) / 0.03) * smoothstep(-0.95, 0.55, flowBX)
       const loopA =
         Math.exp(
           -((Math.hypot(flowBX + 0.26 * Math.sin(t * 0.86), flowBY - 0.22 * Math.cos(t * 0.66)) - 0.31) ** 2) /
@@ -200,21 +201,21 @@ export function OrbField() {
         )
       const band = Math.min(Math.max(Math.max(ringSweep, ribbon, loopA, loopB), 0), 1)
 
-      const latWave = Math.sin(v * Math.PI * 7 - t * 1.9 + Math.sin(u * Math.PI * 4)) * 0.028
-      const swirlWave = Math.sin((u - v) * Math.PI * 14 + t * 2.8 + seed * 10) * 0.014
-      const pulse = 0.5 + 0.5 * Math.sin(t * 0.8 + seed * 12)
+      const latWave = Math.sin(v * Math.PI * 7 - t * 1.55 + Math.sin(u * Math.PI * 4)) * 0.022
+      const swirlWave = Math.sin((u - v) * Math.PI * 14 + t * 2.15 + seed * 10) * 0.01
+      const pulse = 0.5 + 0.5 * Math.sin(t * 0.62 + seed * 12)
 
-      let radius = 1 + latWave + swirlWave + band * 0.12 + loopA * 0.09 + loopB * 0.07
-      radius = Math.max(radius, 0.9)
+      let radius = 1 + latWave * 0.7 + swirlWave * 0.55 + band * 0.052 + loopA * 0.038 + loopB * 0.03
+      radius = Math.min(Math.max(radius, 0.965), 1.075)
 
       let px = dirX * radius
       let py = dirY * radius
       let pz = dirZ * radius
 
-      ;[px, pz] = rotateXZ(px, pz, (0.12 + band * 0.16) * Math.sin(t * 0.94 + dirY * 2.4))
-      ;[px, py] = rotateXY(px, py, (0.08 + loopA * 0.18) * Math.cos(t * 0.71 + dirZ * 2.1))
+      ;[px, pz] = rotateXZ(px, pz, (0.08 + band * 0.1) * Math.sin(t * 0.78 + dirY * 2.4))
+      ;[px, py] = rotateXY(px, py, (0.055 + loopA * 0.1) * Math.cos(t * 0.56 + dirZ * 2.1))
 
-      const shellPush = ribbon * 0.04 + loopA * 0.05 + loopB * 0.04
+      const shellPush = ribbon * 0.008 + loopA * 0.012 + loopB * 0.01
       px += dirX * shellPush
       py += dirY * shellPush
       pz += dirZ * shellPush
@@ -224,9 +225,10 @@ export function OrbField() {
       positions[i3 + 2] = pz * ORB_CONFIG.radius
 
       const front = smoothstep(-0.9, 0.65, dirZ)
-      const energy = mix(0.26, 1, band) * (0.78 + pulse * 0.2)
-      const baseT = Math.min(Math.max(band * 0.92 + front * 0.18, 0), 1)
-      const accentT = Math.min(Math.max((band * 0.38 + pulse * 0.18) * 0.92, 0), 1)
+      const shell = smoothstep(0.94, 1.0, radius) * 0.42 + 0.34
+      const energy = mix(0.42, 1.0, band) * (0.84 + pulse * 0.16) * shell
+      const baseT = Math.min(Math.max(shell * 0.48 + band * 0.82 + front * 0.16, 0), 1)
+      const accentT = Math.min(Math.max(shell * 0.18 + band * 0.34 + pulse * 0.14, 0), 1)
 
       let r = mix(0.62, 1.0, baseT)
       let g = mix(0.05, 0.31, baseT)
@@ -239,7 +241,7 @@ export function OrbField() {
       colors[i3] = r * energy
       colors[i3 + 1] = g * energy
       colors[i3 + 2] = b * energy
-      sizes[index] = mix(3.2, 10.5, band) + front * 1.3 + pulse * 0.45
+      sizes[index] = mix(5.8, 11.0, band) + front * 1.05 + pulse * 0.4
     }
 
     geometry.attributes.position.needsUpdate = true
@@ -247,7 +249,7 @@ export function OrbField() {
     geometry.attributes.aSize.needsUpdate = true
     geometry.computeBoundingSphere()
 
-    points.rotation.y = state.clock.elapsedTime * 0.18
+    points.rotation.y = rawTime * 0.11
   })
 
   return (

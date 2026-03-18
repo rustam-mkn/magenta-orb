@@ -1,6 +1,6 @@
 export const ORB_CONFIG = {
-  latSegments: 92,
-  lonSegments: 156,
-  pointCount: 92 * 156,
-  radius: 1.46,
+  latSegments: 74,
+  lonSegments: 118,
+  pointCount: 74 * 118,
+  radius: 1.04,
 } as const

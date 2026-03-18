@@ -14,15 +14,13 @@ export function OrbScene() {
     }
 
     const t = state.clock.elapsedTime
-    group.rotation.y = t * 0.12
-    group.rotation.x = Math.sin(t * 0.23) * 0.08
-    group.rotation.z = Math.cos(t * 0.17) * 0.05
+    group.rotation.y = t * 0.075
+    group.rotation.x = Math.sin(t * 0.18) * 0.055
+    group.rotation.z = Math.cos(t * 0.13) * 0.035
   })
 
   return (
     <>
-      <color attach="background" args={['#12000a']} />
-      <fog attach="fog" args={['#12000a', 5.2, 10]} />
       <ambientLight intensity={0.2} color={new Color('#ff4da6')} />
       <group ref={groupRef}>
         <OrbField />
